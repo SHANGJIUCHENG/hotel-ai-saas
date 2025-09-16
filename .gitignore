@@ -1,5 +1,13 @@
+# Node / Next.js
 node_modules
-# Keep environment variables out of version control
-.env
+.next
+out
+dist
+coverage
 
-/generated/prisma
+# Env
+.env
+.env.*
+
+# System
+.DS_Store
