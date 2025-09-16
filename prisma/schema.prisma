@@ -1,0 +1,45 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Property {
+  id        Int        @id @default(autoincrement())
+  name      String
+  address   String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  roomTypes RoomType[]
+}
+
+model RoomType {
+  id         Int      @id @default(autoincrement())
+  name       String
+  capacity   Int
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId Int
+  rooms      Room[]
+}
+
+model Room {
+  id         Int       @id @default(autoincrement())
+  number     String
+  roomType   RoomType  @relation(fields: [roomTypeId], references: [id])
+  roomTypeId Int
+  bookings   Booking[]
+}
+
+model Booking {
+  id        Int      @id @default(autoincrement())
+  guestName String
+  checkIn   DateTime
+  checkOut  DateTime
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    Int
+  createdAt DateTime @default(now())
+}

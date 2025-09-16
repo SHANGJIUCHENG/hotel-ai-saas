@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --radius: 1rem; /* 2xl */
+}
+
+html, body, :root { height: 100%; }
+body { @apply bg-neutral-50 text-neutral-900 antialiased; }
+
+/* 简单的 Skeleton 占位样式 */
+.skeleton { @apply animate-pulse bg-neutral-200 rounded-lg; }
