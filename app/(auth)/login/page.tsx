@@ -99,15 +99,23 @@
 // }
 
 'use client'
-import { useState } from 'react'
+import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { signIn } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [submitting, setSubmitting] = useState(false)
+  return (
+    <React.Suspense fallback={<div className="py-10 text-center text-sm text-neutral-500">Loading…</div>}>
+      <LoginForm />
+    </React.Suspense>
+  )
+}
+
+function LoginForm() {
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [submitting, setSubmitting] = React.useState(false)
   const params = useSearchParams()
   const callbackUrl = params.get('callbackUrl') || '/dashboard'
 

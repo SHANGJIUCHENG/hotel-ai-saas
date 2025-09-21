@@ -1,9 +1,10 @@
-// components/ui/dialog.tsx
 'use client'
-import { ReactNode, useEffect } from 'react'
 
-export function Dialog({ open, onClose, children }: { open: boolean; onClose: () => void; children: ReactNode }) {
-  useEffect(() => {
+// components/ui/dialog.tsx
+import * as React from 'react'
+
+export function Dialog({ open, onClose, children }: { open: boolean; onClose: () => void; children: React.ReactNode }) {
+  React.useEffect(() => {
     const onEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     if (open) document.addEventListener('keydown', onEsc)
     return () => document.removeEventListener('keydown', onEsc)

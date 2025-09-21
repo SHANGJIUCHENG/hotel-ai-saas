@@ -11,12 +11,20 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const b = await req.json().catch(() => null)
-  if (!b?.name || typeof b.capacity !== "number" || !b?.propertyId) {
-    return bad("name, capacity(number), propertyId required")
+  const b = await req.json().catch(() => null) as Partial<{ name: unknown; capacity: unknown; propertyId: unknown }>
+  const capacity = Number(b?.capacity)
+  const propertyId = Number(b?.propertyId)
+  if (
+    typeof b?.name !== 'string' ||
+    !Number.isInteger(capacity) ||
+    capacity <= 0 ||
+    !Number.isInteger(propertyId) ||
+    propertyId <= 0
+  ) {
+    return bad('name, capacity(number), propertyId required')
   }
   const created = await prisma.roomType.create({
-    data: { name: b.name, capacity: b.capacity, propertyId: b.propertyId },
+    data: { name: b.name, capacity, propertyId },
   })
   return ok(created)
 }

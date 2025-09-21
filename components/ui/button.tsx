@@ -1,9 +1,11 @@
-import { ButtonHTMLAttributes, forwardRef } from 'react'
+'use client'
+
+import * as React from 'react'
 import clsx from 'clsx'
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, ...props }, ref) => (
     <button
       ref={ref}

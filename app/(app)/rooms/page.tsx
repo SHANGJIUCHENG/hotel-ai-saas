@@ -10,7 +10,7 @@
 
 // app/(app)/rooms/page.tsx
 'use client'
-import { useEffect, useMemo, useState } from 'react'
+import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Dialog, DialogHeader } from '@/components/ui/dialog'
@@ -20,26 +20,26 @@ import { fetchJson, paginate } from '@/lib/client'
 type Room = { id: number; number: string; roomType: { id: number; name: string } }
 
 export default function RoomsPage() {
-  const [rows, setRows] = useState<Room[]>([])
-  const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState('')
-  const [page, setPage] = useState(1)
-  const [size, setSize] = useState(10)
+  const [rows, setRows] = React.useState<Room[]>([])
+  const [loading, setLoading] = React.useState(true)
+  const [search, setSearch] = React.useState('')
+  const [page, setPage] = React.useState(1)
+  const [size, setSize] = React.useState(10)
 
-  const filtered = useMemo(() => rows.filter(r =>
+  const filtered = React.useMemo(() => rows.filter(r =>
     (r.number + r.roomType?.name).toLowerCase().includes(search.toLowerCase())
   ), [rows, search])
-  const { rows: pageRows, total } = useMemo(() => paginate(filtered, page, size), [filtered, page, size])
+  const { rows: pageRows, total } = React.useMemo(() => paginate(filtered, page, size), [filtered, page, size])
 
   async function load() {
     setLoading(true)
     try { setRows(await fetchJson<Room[]>('/api/rooms')) }
     finally { setLoading(false) }
   }
-  useEffect(() => { load() }, [])
+  React.useEffect(() => { void load() }, [])
 
-  const [open, setOpen] = useState(false)
-  const [editing, setEditing] = useState<Room | null>(null)
+  const [open, setOpen] = React.useState(false)
+  const [editing, setEditing] = React.useState<Room | null>(null)
 
   async function create(data: { number: string; roomTypeId: number }) {
     await fetch('/api/rooms', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) })

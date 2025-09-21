@@ -10,7 +10,7 @@
 
 // app/(app)/properties/page.tsx
 'use client'
-import { useEffect, useMemo, useState } from 'react'
+import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Dialog, DialogHeader } from '@/components/ui/dialog'
@@ -20,25 +20,25 @@ import { fetchJson, paginate } from '@/lib/client'
 type Property = { id: number; name: string; address: string }
 
 export default function PropertiesPage() {
-  const [rows, setRows] = useState<Property[]>([])
-  const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState('')
-  const [page, setPage] = useState(1)
-  const [size, setSize] = useState(10)
-  const filtered = useMemo(() => rows.filter(r =>
+  const [rows, setRows] = React.useState<Property[]>([])
+  const [loading, setLoading] = React.useState(true)
+  const [search, setSearch] = React.useState('')
+  const [page, setPage] = React.useState(1)
+  const [size, setSize] = React.useState(10)
+  const filtered = React.useMemo(() => rows.filter(r =>
     (r.name + r.address).toLowerCase().includes(search.toLowerCase())
   ), [rows, search])
-  const { rows: pageRows, total } = useMemo(() => paginate(filtered, page, size), [filtered, page, size])
+  const { rows: pageRows, total } = React.useMemo(() => paginate(filtered, page, size), [filtered, page, size])
 
   async function load() {
     setLoading(true)
     try { setRows(await fetchJson<Property[]>('/api/properties')) }
     finally { setLoading(false) }
   }
-  useEffect(() => { load() }, [])
+  React.useEffect(() => { void load() }, [])
 
-  const [open, setOpen] = useState(false)
-  const [editing, setEditing] = useState<Property | null>(null)
+  const [open, setOpen] = React.useState(false)
+  const [editing, setEditing] = React.useState<Property | null>(null)
 
   async function create(data: { name: string; address: string }) {
     await fetch('/api/properties', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) })

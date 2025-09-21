@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 export default function BookingsPage() {
   return (
     <div className="space-y-4">
