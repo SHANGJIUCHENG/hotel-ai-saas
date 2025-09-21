@@ -1,5 +1,7 @@
-// components/properties/PropertyForm.tsx
 'use client'
+
+// components/properties/PropertyForm.tsx
+import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PropertySchema, type PropertyInput } from '@/lib/schemas'

@@ -1,7 +1,7 @@
-// components/rooms/RoomForm.tsx
 'use client'
+
+// components/rooms/RoomForm.tsx
 import * as React from 'react'
-import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { RoomSchema, type RoomInput } from '@/lib/schemas'
@@ -23,7 +23,9 @@ export function RoomForm({ initial, onSubmit, submitting }: {
   })
 
   const [types, setTypes] = React.useState<RoomType[]>([])
-  useEffect(() => { fetchJson<RoomType[]>('/api/room_types').then(setTypes).catch(() => setTypes([])) }, [])
+  React.useEffect(() => {
+    fetchJson<RoomType[]>('/api/room_types').then(setTypes).catch(() => setTypes([]))
+  }, [])
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit(async (v) => { v.roomTypeId = Number(v.roomTypeId); await onSubmit(v); reset(v) })}>

@@ -11,17 +11,24 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const b = await req.json().catch(() => null)
-  const hasDates = b?.checkIn && b?.checkOut && !Number.isNaN(Date.parse(b.checkIn)) && !Number.isNaN(Date.parse(b.checkOut))
-  if (!b?.guestName || !hasDates || !b?.roomId) {
-    return bad("guestName, checkIn, checkOut(ISO), roomId required")
+  const b = await req.json().catch(() => null) as Partial<{ guestName: unknown; checkIn: unknown; checkOut: unknown; roomId: unknown }>
+  const checkIn = typeof b?.checkIn === 'string' ? new Date(b.checkIn) : null
+  const checkOut = typeof b?.checkOut === 'string' ? new Date(b.checkOut) : null
+  const roomId = Number(b?.roomId)
+  if (
+    typeof b?.guestName !== 'string' ||
+    !checkIn || Number.isNaN(checkIn.getTime()) ||
+    !checkOut || Number.isNaN(checkOut.getTime()) ||
+    !Number.isInteger(roomId) || roomId <= 0
+  ) {
+    return bad('guestName, checkIn, checkOut(ISO), roomId required')
   }
   const created = await prisma.booking.create({
     data: {
       guestName: b.guestName,
-      checkIn: new Date(b.checkIn),
-      checkOut: new Date(b.checkOut),
-      roomId: b.roomId,
+      checkIn,
+      checkOut,
+      roomId,
     },
   })
   return ok(created)

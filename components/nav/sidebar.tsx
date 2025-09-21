@@ -1,3 +1,4 @@
+import * as React from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { NavLink } from './types'

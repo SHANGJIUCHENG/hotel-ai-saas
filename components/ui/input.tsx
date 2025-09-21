@@ -1,6 +1,10 @@
+'use client'
+
 // components/ui/input.tsx
-import { InputHTMLAttributes, forwardRef } from 'react'
-export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
+
+import * as React from 'react'
+
+export const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   ({ className = '', ...props }, ref) => (
     <input
       ref={ref}

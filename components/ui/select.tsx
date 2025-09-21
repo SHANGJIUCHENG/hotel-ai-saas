@@ -1,6 +1,10 @@
+'use client'
+
 // components/ui/select.tsx
-import { SelectHTMLAttributes, forwardRef } from 'react'
-export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSelectElement>>(
+
+import * as React from 'react'
+
+export const Select = React.forwardRef<HTMLSelectElement, React.SelectHTMLAttributes<HTMLSelectElement>>(
   ({ className = '', children, ...props }, ref) => (
     <select
       ref={ref}

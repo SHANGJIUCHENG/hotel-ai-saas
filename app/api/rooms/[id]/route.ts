@@ -4,8 +4,19 @@ import { ok, bad, notFound, toId } from "@/lib/api"
 
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   const id = toId(params.id)
-  const data = await req.json().catch(() => null)
-  if (!data) return bad("invalid json")
+  const body = await req.json().catch(() => null) as Partial<{ number: unknown; roomTypeId: unknown }>
+  if (!body) return bad('invalid json')
+  const data: { number?: string; roomTypeId?: number } = {}
+  if (body.number !== undefined) {
+    if (typeof body.number !== 'string') return bad('invalid number')
+    data.number = body.number
+  }
+  if (body.roomTypeId !== undefined) {
+    const roomTypeId = Number(body.roomTypeId)
+    if (!Number.isInteger(roomTypeId) || roomTypeId <= 0) return bad('invalid roomTypeId')
+    data.roomTypeId = roomTypeId
+  }
+  if (!Object.keys(data).length) return bad('no valid fields')
   try {
     const updated = await prisma.room.update({ where: { id }, data })
     return ok(updated)
